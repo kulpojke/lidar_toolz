@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "pc_extent",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::26910" } },
+"features": [
+{ "type": "Feature", "properties": { "MINX": 952777.04, "MINY": 3794336.86, "MAXX": 953621.84, "MAXY": 3795181.73, "CNTX": 953199.44, "CNTY": 3794759.295, "AREA": 713746.17600003537, "PERIM": 3379.3400000000838, "HEIGHT": 844.87000000011176, "WIDTH": 844.79999999993015 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 952777.04, 3794336.86 ], [ 953621.84, 3794336.86 ], [ 953621.84, 3795181.73 ], [ 952777.04, 3795181.73 ], [ 952777.04, 3794336.86 ] ] ] } }
+]
+}
