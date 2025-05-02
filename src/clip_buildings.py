@@ -1,6 +1,6 @@
 #!/bin/python
 # usage:
-# python src/clip_buildings.py --aoi=vectors/Eaton_Perimeter_20250121.geojson --buildings=../vectors/eaton_buildings.geojson --out_srs=26910 --in_dir=laz --out_dir=out
+# python src/clip_buildings.py --aoi=vectors/Eaton_Perimeter_20250121.geojson --buildings=vectors/eaton_buildings.geojson --out_srs=26910 --in_dir=laz --out_dir=out
 
 #%%
 from pathlib import Path
@@ -74,7 +74,6 @@ def parse_arguments():
     return args
 
 #%%
- 
 #uncomment below for testing or running in ipython
 #ARGS=argparse.Namespace()
 #ARGS.aoi = Path('../vectors/Eaton_Perimeter_20250121.geojson').resolve()
@@ -102,10 +101,11 @@ buildings['class'] = 6
 # %%
 # create stages and stage creator functions
 
-def overlay_filter(vectors):
+def overlay_filter(vectors, layer):
     return pdal.Filter.overlay(
         column='class',
         datasource=vectors,
+        layer=layer,
         dimension='Classification'
         )
 
@@ -118,10 +118,10 @@ def writer(dst):
         filename=dst
         )
 
-def pipeline(points, vectors, dst):
-    pipe = overlay_filter(vectors).pipeline(points)
-    #pipe | expression
-    #pipe | writer(dst)
+def pipeline(points, vectors, dst, layer):
+    pipe = overlay_filter(vectors, layer).pipeline(points)
+    pipe | expression
+    pipe | writer(dst)
 
     return pipe
     
@@ -168,14 +168,17 @@ else:
     sys.exit()
 
 for src in files:
+    print(src)
     # get points and extent
     points, extent = get_pc_and_extent(src)
     # save extent as geojson
     extent_path = Path(src.stem + '.geojson')
-    _ = gpd.clip(buildings, extent).to_file(extent_path)
+    layer = 'data'
+    _ = gpd.clip(buildings, extent).to_file(extent_path,layer=layer)
 
     # run pipeline on points
     dst = ARGS.out_dir / (src.stem + f'_clipped_{ARGS.out_srs}.laz')
-    pipe = pipeline(points, extent_path, dst)
+    pipe = pipeline(points, extent_path, dst, layer)
     n = pipe.execute()
+    print(n)
 # %%

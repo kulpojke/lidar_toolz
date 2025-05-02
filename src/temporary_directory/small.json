@@ -1,0 +1,24 @@
+[
+    {
+        "tag": "read",
+        "type": "readers.las",
+        "filename": "/home/michael/CP/UEFI/src/temporary_directory/small.laz"
+    },
+    {
+        "tag": "ovrly",
+        "column": "class",
+        "datasource": "/home/michael/CP/UEFI/src/temporary_directory/small.gpkg",
+        "dimension": "Classification",
+        "type": "filters.overlay"
+    },
+    {
+        "tag": "exp",
+        "expression": "Classification != 6",
+        "type": "filters.expression"
+    },
+    {
+        "tag": "wrt",
+        "type": "writers.las",
+        "filename": "/home/michael/CP/UEFI/out/small_noBuildings.laz"
+    }
+]
