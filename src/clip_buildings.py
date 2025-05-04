@@ -1,6 +1,6 @@
 #!/bin/python
 # usage:
-# python src/clip_buildings.py --aoi=vectors/Eaton_Perimeter_20250121.geojson --buildings=vectors/eaton_buildings.geojson --out_srs=26910 --in_dir=laz --out_dir=out
+# python clip_buildings.py  --buildings=../vectors/eaton_buildings.geojson --out_srs=26910 --in_dir=../laz_tmp --out_dir=../out
 
 #%%
 from pathlib import Path
@@ -18,10 +18,10 @@ def parse_arguments():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '--in_dir',
+        '--in_laz',
         type=str,
         required=False,
-        help='Path to directory containing input las/z files'
+        help='Path to  las/z file'
     )
 
     parser.add_argument(
@@ -66,8 +66,8 @@ def parse_arguments():
     if args.aoi is not None:
         args.aoi = Path(args.aoi).resolve()
     args.buildings = Path(args.buildings).resolve()
-    if args.in_dir is not None:
-        args.in_dir = Path(args.in_dir).resolve()
+    if args.in_laz is not None:
+        args.in_laz = Path(args.in_laz).resolve()
     if args.out_dir is not None:
         args.out_dir = Path(args.out_dir).resolve()
 
@@ -142,6 +142,9 @@ def get_pc_and_extent(laz):
     miny = np.min(arr[0]['Y'])
     maxy = np.max(arr[0]['Y'])
 
+    print(corners)
+    print(minx, maxx, miny, maxy)
+
     return arr, Polygon((
         (minx, miny),
         (minx, maxy),
@@ -156,29 +159,23 @@ def filter_points(arr, tile_buildings):
 
 #%%
 
-if ARGS.in_dir is not None:
-    files = ARGS.in_dir.glob('*.laz')
-elif ARGS.uri_list is not None:
-    files = (Path(uri) for uri in ARGS.uri_list)
-else:
-    print(
-        '''Yo fool! you either need to provide a directory containing
-        las/las files, or a URI list!'''
-        )
-    sys.exit()
 
-for src in files:
-    print(src)
-    # get points and extent
-    points, extent = get_pc_and_extent(src)
-    # save extent as geojson
-    extent_path = Path(src.stem + '.geojson')
-    layer = 'data'
-    _ = gpd.clip(buildings, extent).to_file(extent_path,layer=layer)
+src = ARGS.in_laz
+# get points and extent
+points, extent = get_pc_and_extent(src)
 
-    # run pipeline on points
-    dst = ARGS.out_dir / (src.stem + f'_clipped_{ARGS.out_srs}.laz')
-    pipe = pipeline(points, extent_path, dst, layer)
-    n = pipe.execute()
-    print(n)
+#[DEBUG]
+print(len(points))
+print
+
+# save extent as geojson
+extent_path = Path(src.stem + '.geojson')
+layer = 'data'
+_ = gpd.clip(buildings, extent).to_file(extent_path, layer=layer)
+
+# run pipeline on points
+dst = ARGS.out_dir / (src.stem + f'_clipped_{ARGS.out_srs}.laz')
+pipe = pipeline(points, extent_path, dst, layer)
+n = pipe.execute()
+print(n)
 # %%
