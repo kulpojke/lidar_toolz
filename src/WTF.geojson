@@ -1,8 +1,0 @@
-{
-"type": "FeatureCollection",
-"name": "WTF",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::26910" } },
-"features": [
-{ "type": "Feature", "properties": { }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 947370.26, 3795156.06 ], [ 947370.26, 3795460.589999999850988 ], [ 947660.87, 3795460.589999999850988 ], [ 947660.87, 3795156.06 ], [ 947370.26, 3795156.06 ] ] ] } }
-]
-}

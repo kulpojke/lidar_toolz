@@ -1,6 +1,6 @@
 {
 "type": "FeatureCollection",
-"name": "USGS_LPC_CA_LosAngeles_2016_L4_6535_1889b_LAS_2018_EPSG26910",
+"name": "data",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::26910" } },
 "features": [
 

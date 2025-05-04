@@ -1,0 +1,21 @@
+[
+    {
+        "type": "readers.las",
+        "filename": "/home/michael/Work/lidar_toolz/laz/USGS_LPC_CA_LosAngeles_2016_L4_6514_1894d_LAS_2018.laz"
+    },
+    {
+        "type": "filters.assign",
+        "value": "Tmp = 0"
+    },
+    {
+      "type":"filters.overlay",
+      "dimension":"Tmp",
+      "datasource":"vectors/small_aoi.geojson",
+      "column":"CLS"
+    },
+    {
+      "type":"filters.range",
+      "limits":"Tmp[18:18]"
+    },
+    "small_aoi.laz"
+]
