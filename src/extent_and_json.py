@@ -63,12 +63,12 @@ def parse_arguments():
 def get_extent(laz):
     pipe = pdal.Reader.las(filename=laz).pipeline()
     p = pipe.execute()
-    
+
     arr = pipe.arrays[0]
-    minx = np.min(arr[0]['X'])
-    maxx = np.max(arr[0]['X'])
-    miny = np.min(arr[0]['Y'])
-    maxy = np.max(arr[0]['Y'])
+    minx = np.min(arr['X'])
+    maxx = np.max(arr['X'])
+    miny = np.min(arr['Y'])
+    maxy = np.max(arr['Y'])
 
     return Polygon((
         (minx, miny),
@@ -127,11 +127,6 @@ buildings['class'] = 6
 
 # get extent
 extent = get_extent(ARGS.in_laz)
-
-##### DEBUG
-gpd.GeoDataFrame(geometry=[extent]).set_crs(ARGS.out_srs).to_file('WTF.geojson')
-print(buildings.geometry.within(gpd.GeoDataFrame(geometry=[extent]).set_crs(ARGS.out_srs)).any())
-
 
 # save extent as gpkg
 extent_path = ARGS.tmp_dir / f'{ARGS.in_laz.stem}.gpkg'

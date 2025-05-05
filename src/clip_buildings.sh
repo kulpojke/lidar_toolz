@@ -11,8 +11,7 @@ case "$flag" in
         echo "     ./start [options] -k key_file -u list_of_urls -o output_dir -b bucket -d bucket_dir "
         echo "DESCRIPTION"
         echo "     Removes points lying within polygons (e.g. building footprints)"
-        echo "     from point clouds.  Point Clouds and Vectors must be in the same srs"
-        echo "     Copies them to gcloud bucket"
+        echo "     from point clouds.  "
         echo "        "
         echo "     options:"
         echo "        "
@@ -56,7 +55,9 @@ if [[ -v INPUT ]]; then
                     --tmp_dir=$TMPDIR \
                     --out_srs=$SRS \
                 && \
-                pdal pipeline $TMPDIR/{.}.json"
+                pdal pipeline $TMPDIR/{.}.json \
+                && \
+                rm $TMPDIR/{.}*"
 
         elif [ -f $INPUT]; then
             cat $INPUT | parallel 'echo {}'    
