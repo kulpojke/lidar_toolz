@@ -1,0 +1,8 @@
+name: lidar_env
+channels:
+  - conda-forge
+dependencies:
+  - pdal
+  - python-pdal
+  - geopandas
+  - parallel
