@@ -62,7 +62,7 @@ def parse_arguments():
 
 def get_extent(laz):
     pipe = pdal.Reader.las(filename=laz).pipeline()
-    p = pipe.execute()
+    n = pipe.execute()
 
     arr = pipe.arrays[0]
     minx = np.min(arr['X'])
