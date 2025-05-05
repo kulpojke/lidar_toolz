@@ -8,7 +8,7 @@ import geopandas as gpd
 import json
 import numpy as np
 import pdal
-import sys
+
 
 
 def parse_arguments():
